@@ -1,13 +1,41 @@
 # GU140X32F-D903S_VFD_Library
 Modern Arduino library for the Noritake GU140X32F-D903S graphical VFD.
+Controller is:
+    7292ZA00
+    R5F21368
+        SDFP
 
 ## Scope:
 The goal of this project is to create a custom library for the Noritake VFD. This will be a learning experience for learning how to write custom libraries for SPI devices. The end product should be compatible with Adafruit GFX and be able to detect the touch inputs built into the display.
 
 
 ## Steps:
-1. Record all SPI commands from datasheet
-2. 
+
+1.  Read the datasheet like a product manager
+
+Write down features, not bytes.
+
+2.  Write the .h first
+
+Even if it doesn’t compile yet.
+
+3.  Implement one method at a time
+
+Start with:
+
+begin()
+
+clear()
+
+write()
+
+4.  Test each command immediately
+
+Don’t batch.
+
+5.  Refactor
+
+When you see repeated byte patterns → helper function.
 
 
 1️⃣ Low-level SPI transport (easy)
