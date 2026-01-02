@@ -1,7 +1,7 @@
 #include <SPI.h>
 
-#define CS_PIN     24   // change if needed
-#define RESET_PIN  6    // MUST be wired
+#define CS_PIN     25   // display pin 7
+#define RESET_PIN  24    // display pin 6
 #define SPI_CLOCK  500000  // conservative
 
 void select() {

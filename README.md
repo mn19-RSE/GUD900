@@ -3,10 +3,7 @@ This library is a learning experiment and does not currently work
 
 # GU140X32F-D903S_VFD_Library
 Modern Arduino library for the Noritake GU140X32F-D903S graphical VFD.
-Controller is:
-    7292ZA00
-    R5F21368
-        SDFP
+Controller is: 7292ZA00 R5F21368 SDFP
 
 ## Scope:
 The goal of this project is to create a custom library for the Noritake VFD. This will be a learning experience for learning how to write custom libraries for SPI devices. The end product should be compatible with Adafruit GFX and be able to detect the touch inputs built into the display.
