@@ -1,58 +1,49 @@
 #include <SPI.h>
 
-#define CS_PIN     25   // display pin 7
-#define RESET_PIN  24    // display pin 6
-#define SPI_CLOCK  500000  // conservative
-
-void select() {
-  digitalWrite(CS_PIN, LOW);
-}
-
-void deselect() {
-  digitalWrite(CS_PIN, HIGH);
-}
-
-void send(uint8_t b) {
-  SPI.transfer(b);
-}
+#define CS_PIN 25
+#define RESET_PIN 24
+#define MBUSY_PIN 0
 
 void setup() {
   pinMode(CS_PIN, OUTPUT);
   pinMode(RESET_PIN, OUTPUT);
+  pinMode(MBUSY_PIN, INPUT);
 
-  deselect();
-
-  // ---- HARDWARE RESET ----
-  digitalWrite(RESET_PIN, LOW);
-  delay(20);
-  digitalWrite(RESET_PIN, HIGH);
-  delay(100);
-
-  // ---- SPI INIT ----
   SPI.begin();
-  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
+  digitalWrite(CS_PIN, HIGH);
+  // Hardware reset
+  digitalWrite(RESET_PIN, LOW);
+  delay(5);
+  digitalWrite(RESET_PIN, HIGH);
+  // delay(50);
 
-  // ---- SOFTWARE RESET ----
-  select();
-  send(0x1B);
-  send(0x40);
-  deselect();
-  delay(20);
+  // Wait for display ready
+  while (digitalRead(MBUSY_PIN) == HIGH) {}
+  delay(5);
+  // /CS pulse
+  digitalWrite(CS_PIN, LOW);
+  // Send data write prefix
+  SPI.transfer(0x44);
+  // Initialize
+  SPI.transfer(0x1B);
+  SPI.transfer(0x40);
+  delay(50);
+  digitalWrite(CS_PIN, HIGH);
 
-  // ---- CLEAR SCREEN ----
-  select();
-  send(0x0C);
-  deselect();
-  delay(20);
 
-  // ---- ALL DOTS ON (SCREEN TEST) ----
-  select();
-  send(0x1F);
-  send(0x28);
-  send(0x61);
-  send(0x40);
-  send(0x03);  // ALL DOT ON
-  deselect();
+  while (digitalRead(MBUSY_PIN) == HIGH) {}
+  delay(5);
+  // /CS pulse
+  digitalWrite(CS_PIN, LOW);
+  // Send data write prefix
+  SPI.transfer(0x44);
+  // 
+  SPI.transfer(0x1F);
+  SPI.transfer(0x40);
+  delay(50);
+  digitalWrite(CS_PIN, HIGH);
+
+
 }
 
 void loop() {}
